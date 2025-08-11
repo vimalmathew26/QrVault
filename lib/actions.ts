@@ -4,6 +4,7 @@
 import { z } from 'zod';
 import connectToDB from './db';
 import GeneratedCode from './models/GeneratedCode';
+import ScannedCode from './models/ScannedCode'; 
 import { revalidatePath } from 'next/cache';
 
 // Define a schema for input validation using Zod
@@ -65,3 +66,49 @@ export async function createGeneratedCode(
     };
   }
 }
+
+export type ScanFormState = {
+    error?: string;
+    success: boolean;
+    message: string;
+  }
+  
+  const ScanCodeSchema = z.object({
+    data: z.string().min(1, { message: 'Scanned data cannot be empty.' }),
+    note: z.string().optional(),
+  });
+  
+  export async function createScannedCode(
+    prevState: ScanFormState,
+    formData: FormData
+  ): Promise<ScanFormState> {
+    const validatedFields = ScanCodeSchema.safeParse({
+      data: formData.get('data'),
+      note: formData.get('note'),
+    });
+  
+    if (!validatedFields.success) {
+      return {
+        error: validatedFields.error.flatten().fieldErrors.data?.[0] || 'Invalid data.',
+        success: false,
+        message: 'Validation failed.',
+      };
+    }
+  
+    try {
+      await connectToDB();
+      const newScan = new ScannedCode(validatedFields.data);
+      await newScan.save();
+  
+      revalidatePath('/');
+      return { success: true, message: 'Scan saved to history!' };
+  
+    } catch (error) {
+      console.error('Database Error:', error);
+      return {
+        error: 'Failed to save scan to the database.',
+        success: false,
+        message: 'Database error.',
+      };
+    }
+  }
