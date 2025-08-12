@@ -9,15 +9,6 @@ if (!MONGODB_URI) {
   );
 }
 
-/**
- * Global is used here to maintain a cached connection across hot reloads
- * in development. This prevents connections from growing exponentially
- * during API Route usage.
- */
-
-/**
- * Augment the global object to include a mongoose property for caching.
- */
 interface MongooseGlobal {
   mongoose?: {
     conn: typeof mongoose | null;

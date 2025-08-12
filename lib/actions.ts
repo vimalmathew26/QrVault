@@ -112,3 +112,29 @@ export type ScanFormState = {
       };
     }
   }
+
+  // Action to update a Generated Code's label
+export async function updateGeneratedCodeLabel(id: string, newLabel: string) {
+  try {
+    await connectToDB();
+    await GeneratedCode.findByIdAndUpdate(id, { label: newLabel });
+    revalidatePath('/'); // Refresh the page data
+    return { success: true, message: 'Label updated successfully!' };
+  } catch (error) {
+    console.error(error);
+    return { success: false, message: 'Failed to update label.' };
+  }
+}
+
+// Action to update a Scanned Code's note
+export async function updateScannedCodeNote(id: string, newNote: string) {
+  try {
+    await connectToDB();
+    await ScannedCode.findByIdAndUpdate(id, { note: newNote });
+    revalidatePath('/'); // Refresh the page data
+    return { success: true, message: 'Note updated successfully!' };
+  } catch (error) {
+    console.error(error);
+    return { success: false, message: 'Failed to update note.' };
+  }
+}
