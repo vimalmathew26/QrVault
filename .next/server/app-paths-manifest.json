@@ -1,0 +1,8 @@
+{
+  "/api/scanned/route": "app/api/scanned/route.js",
+  "/api/generated/route": "app/api/generated/route.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/page": "app/page.js",
+  "/(main)/create/page": "app/(main)/create/page.js",
+  "/(main)/scan/page": "app/(main)/scan/page.js"
+}

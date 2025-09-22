@@ -1,0 +1,8 @@
+{
+  "/api/scanned/route": "/api/scanned",
+  "/api/generated/route": "/api/generated",
+  "/_not-found/page": "/_not-found",
+  "/page": "/",
+  "/(main)/create/page": "/create",
+  "/(main)/scan/page": "/scan"
+}
